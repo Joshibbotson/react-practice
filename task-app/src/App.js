@@ -2,6 +2,7 @@ import "./App.css"
 // this imports react and react components, note {Component} is destructing so we
 // can using class App extends Component rather than class App extend React.Component//
 import React, { Component } from "react"
+import { ReactDOM } from "react"
 import Overview from "./components/Overview"
 // this important a library for unique id's using npm install uniqid
 //this is useful because normally databases give you a unique ID//
@@ -9,8 +10,8 @@ import uniqid from "uniqid"
 
 //now we extend to get access to all components properties
 class App extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         // note state has been defined within the constructor//
         this.state = {
             task: { text: "", id: uniqid(), no: 0 },
@@ -18,8 +19,16 @@ class App extends Component {
         }
     }
 
+    deleteTask(key) {
+        console.log(key)
+        // this.setState.tasks.map(task => {
+        //     if (task.e === e) {
+        //         return console.log(e)
+        //     }
+        // })
+    }
+
     handleChange = e => {
-        console.log(e.target.value)
         this.setState({
             task: {
                 text: e.target.value,
@@ -58,7 +67,10 @@ class App extends Component {
                         Add Task
                     </button>
                 </form>
-                <Overview tasks={tasks} />
+                <Overview
+                    toMap={this.state.tasks}
+                    onDeleteBtn={this.deleteTask}
+                />
             </div>
         )
     }
