@@ -1,79 +1,53 @@
 import "./App.css"
-// this imports react and react components, note {Component} is destructing so we
-// can using class App extends Component rather than class App extend React.Component//
-import React, { Component } from "react"
-import { ReactDOM } from "react"
-import Overview from "./components/Overview"
-// this important a library for unique id's using npm install uniqid
-//this is useful because normally databases give you a unique ID//
-import uniqid from "uniqid"
-
-//now we extend to get access to all components properties
-class App extends Component {
-    constructor(props) {
-        super(props)
-        // note state has been defined within the constructor//
-        this.state = {
-            task: { text: "", id: uniqid(), no: 0 },
-            tasks: [],
-        }
-    }
-
-    deleteTask(key) {
-        console.log(key)
-        // this.setState.tasks.map(task => {
-        //     if (task.e === e) {
-        //         return console.log(e)
-        //     }
-        // })
-    }
-
-    handleChange = e => {
-        this.setState({
-            task: {
-                text: e.target.value,
-                id: this.state.task.id,
-                no: this.state.tasks.length,
-            },
-        })
-        console.log(this.state)
-    }
-
-    onSubmitTask = e => {
-        e.preventDefault()
-        this.setState({
-            tasks: this.state.tasks.concat(this.state.task),
-            task: { text: "" },
-            id: uniqid(),
-        })
-    }
-
-    render() {
-        const { task, tasks } = this.state //destructed state.task state.tasks so can now
-        //be used as task and tasks//
-
+import React, { useState } from "react"
+import ReactDOM from "react-dom"
+// import uniqid from "uniqid"
+const App = () => {
+    //component//
+    const Input = props => {
+        console.log(props)
         return (
-            <div>
-                <form onSubmit={this.onSubmitTask}>
-                    <label htmlFor="taskInput"> Enter task</label>
-                    <input
-                        onChange={this.handleChange}
-                        value={task.text} //we need to specify what the value output should
-                        // look like in react//
-                        type="text"
-                        id="taskInput"
-                    />
-                    <button type="submit" onClick={this.onSubmitTask}>
-                        Add Task
-                    </button>
-                </form>
-                <Overview
-                    toMap={this.state.tasks}
-                    onDeleteBtn={this.deleteTask}
-                />
+            /*element*/ <div>
+                <input id="textInput" type="text"></input>
+                <button onClick={handleClick.bind(todos, setTodos)}>
+                    {props.searchName}
+                </button>
+                <p>{props.someText}</p>
             </div>
         )
     }
+
+    const handleClick = (state, setState) => {
+        const textInput = document.getElementById("textInput")
+        console.log(textInput.value)
+    }
+
+    const Task = props => {
+        return (
+            <ul>
+                <li>{props.todos}</li>
+            </ul>
+        )
+    }
+
+    Task.defaultProps = {
+        text: ["b", "c", "d"],
+    }
+
+    const [todos, setTodos] = useState([
+        { id: 1, name: "Todo 1", complete: false },
+        { id: 2, name: "Todo 2", complete: false },
+        { id: 3, name: "Todo 3", complete: false },
+    ])
+
+    return (
+        <div>
+            <Input searchName="Add Task" someText="Lover of todos" />
+            {todos.map(task => {
+                return <Task todos={task.name} />
+            })}
+        </div>
+    )
 }
 
 export default App
