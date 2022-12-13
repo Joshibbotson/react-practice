@@ -1,6 +1,6 @@
 import "./App.css"
 import React, { useState } from "react"
-import ReactDOM from "react-dom"
+// import ReactDOM from "react-dom"
 import uniqid from "uniqid"
 const App = () => {
     const [state, setState] = useState(() => {
@@ -38,11 +38,22 @@ const App = () => {
         }))
     }
 
+    const handleDelete = targetKey => {
+        setState(prevState => ({
+            ...prevState,
+            taskArr: prevState.taskArr.filter(item => item.key !== targetKey),
+        }))
+    }
+
+    // CREATES TASK ELEMENT//
     const Task = props => {
         return (
-            <ul>
-                <li key={props.taskKey}>{props.todos}</li>
-            </ul>
+            <li key={props.taskKey}>
+                {props.todos}{" "}
+                <button onClick={handleDelete.bind(null, props.id)}>
+                    delete
+                </button>
+            </li>
         )
     }
 

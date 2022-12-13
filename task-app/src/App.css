@@ -1,0 +1,36 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    background-color: rgb(65, 63, 82);
+    font-weight: 800;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+        sans-serif;
+}
+
+li {
+    color: wheat;
+    list-style: none;
+    display: flex;
+}
+
+button {
+    margin-left: 2rem;
+    background-color: rgb(145, 10, 10);
+    padding: 0.3rem 1rem;
+    font-family: inherit;
+    font-weight: inherit;
+    color: rgb(172, 172, 172);
+}
+
+div:has(input) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+    gap: 2rem;
+}
