@@ -3,43 +3,45 @@ import React, { useState } from "react"
 import ReactDOM from "react-dom"
 import uniqid from "uniqid"
 const App = () => {
-    const [state, setState] = useState({
-        currentTask: {
-            text: "",
-        },
-        taskArr: [{ text: "todo1" }],
+    const [state, setState] = useState(() => {
+        return {
+            currentTask: {
+                text: "",
+                key: uniqid(),
+            },
+            taskArr: [],
+        }
     })
 
     //component//
     const Input = props => {
-        console.log(props)
+        // console.log(props)
         return (
             /*element*/ <div>
-                <input
-                    id="textInput"
-                    type="text"
-                    onChange={handleChange.bind()}
-                ></input>
-                <button onClick={handleClick.bind()}>{props.searchName}</button>
+                <input id="textInput" type="text"></input>
+                <button onClick={handleClick}>{props.searchName}</button>
                 <p>{props.someText}</p>
             </div>
         )
     }
 
-    const handleChange = () => {
-        // setTasks({
-        //     text: value,
-        //     no: 1,
-        //     id: uniqid(),
-        // })
-    }
+    const handleClick = () => {
+        const input = document.getElementById("textInput")
+        setState(prevState => ({
+            ...prevState,
+            currentTask: { text: input.value, key: uniqid() },
+        }))
 
-    const handleClick = () => {}
+        setState(prevState => ({
+            ...prevState,
+            taskArr: [...prevState.taskArr, prevState.currentTask],
+        }))
+    }
 
     const Task = props => {
         return (
             <ul>
-                <li>{props.todos}</li>
+                <li key={props.taskKey}>{props.todos}</li>
             </ul>
         )
     }
@@ -53,7 +55,7 @@ const App = () => {
             <Input searchName="Add Task" someText="Lover of todos" />
 
             {state.taskArr.map(task => {
-                return <Task todos={task.text} />
+                return <Task key={task.key} todos={task.text} id={task.key} />
             })}
         </div>
     )
