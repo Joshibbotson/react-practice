@@ -1,13 +1,16 @@
 import "./App.css"
 import React, { useState } from "react"
-// import ReactDOM from "react-dom"
+import ReactDOM from "react-dom/client"
 import uniqid from "uniqid"
+import root from "./index"
+
 const App = () => {
     const [state, setState] = useState(() => {
         return {
             currentTask: {
                 text: "",
                 key: uniqid(),
+                no: 0,
             },
             taskArr: [],
         }
@@ -20,7 +23,6 @@ const App = () => {
             /*element*/ <div>
                 <input id="textInput" type="text"></input>
                 <button onClick={handleClick}>{props.searchName}</button>
-                <p>{props.someText}</p>
             </div>
         )
     }
@@ -29,7 +31,11 @@ const App = () => {
         const input = document.getElementById("textInput")
         setState(prevState => ({
             ...prevState,
-            currentTask: { text: input.value, key: uniqid() },
+            currentTask: {
+                text: input.value,
+                key: uniqid(),
+                no: prevState.taskArr.length,
+            },
         }))
 
         setState(prevState => ({
@@ -40,16 +46,19 @@ const App = () => {
 
     const handleDelete = targetKey => {
         setState(prevState => ({
-            ...prevState,
+            currentTask: {
+                text: "",
+                key: uniqid(),
+                no: state.taskArr.length,
+            },
             taskArr: prevState.taskArr.filter(item => item.key !== targetKey),
         }))
     }
-
     // CREATES TASK ELEMENT//
     const Task = props => {
         return (
             <li key={props.taskKey}>
-                {props.todos}{" "}
+                {props.todos} {props.no}
                 <button onClick={handleDelete.bind(null, props.id)}>
                     delete
                 </button>
@@ -63,10 +72,17 @@ const App = () => {
 
     return (
         <div>
-            <Input searchName="Add Task" someText="Lover of todos" />
+            <Input searchName="Add Task" />
 
             {state.taskArr.map(task => {
-                return <Task key={task.key} todos={task.text} id={task.key} />
+                return (
+                    <Task
+                        key={task.key}
+                        todos={task.text}
+                        id={task.key}
+                        no={task.no}
+                    />
+                )
             })}
         </div>
     )
